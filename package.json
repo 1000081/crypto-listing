@@ -6,8 +6,8 @@
   "scripts": {
     "start": "webpack-dev-server --mode development --open",
     "dev": "webpack --mode development",
-    "build-old": "webpack --mode production",
-    "build": "webpack --config webpack/dev.js",
+    "build": "webpack --mode production",
+    "build-old": "webpack --config webpack/dev.js",
     "start-dev": "node ./src/server.js"
   },
   "keywords": [],
@@ -63,6 +63,7 @@
     "glightbox": "^3.0.7",
     "gmaps": "^0.4.25",
     "gridjs": "^5.0.2",
+    "gridjs-react": "^5.0.2",
     "gulp-rtlcss": "^1.4.1",
     "imask": "^6.0.7",
     "isotope-layout": "^3.0.6",

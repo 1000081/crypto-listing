@@ -7,17 +7,6 @@ import NewsItem from '../../containers/news/NewsItem';
 import Coins from '../../containers/coin/coin-list';
 import AddCoin from '../../containers/coin/add-coin';
 
-let styles = {
-  backgroundColor: 'HotPink',
-  width: '250px',
-  height: '100px',
-  borderRadius: '100px',
-  display: 'block',
-  margin: '50px auto',
-  fontSize: '25px',
-  border: '3px solid '
-}
-
 export class App extends Component {
   constructor(props) {
     super(props);

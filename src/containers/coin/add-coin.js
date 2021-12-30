@@ -7,78 +7,166 @@ class AddCoin extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            hover: false,
-            showAddCoin: false
+            hover: false
         };
 
-        //   this.marketCapCellRenderer = this.marketCapCellRenderer.bind(this);
     }
 
     render() {
-        const coinlist = this.props.coins;
-        console.log('state......' + this.state.showAddCoin);
-        const staticCellStyle = { maxWidth: 5100 };
         return (
-            <div>
-                <form data-toggle="validator" role="form">
-                    <div class="form-group">
-                        <label for="inputName" class="control-label">Name</label>
-                        <input type="text" class="form-control" id="inputName" placeholder="Cina Saffary" required/>
-                    </div>
-                    <div class="form-group has-feedback">
-                        <label for="inputTwitter" class="control-label">Twitter</label>
-                        <div class="input-group">
-                            <span class="input-group-addon">@</span>
-                            <input type="text" pattern="^[_A-z0-9]{1,}$" maxlength="15" class="form-control" id="inputTwitter" placeholder="1000hz" required/>
+            <div class="col-md-8">
+                <form>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            &nbsp;
                         </div>
-                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-                        <div class="help-block with-errors">Hey look, this one has feedback icons!</div>
                     </div>
-                    <div class="form-group">
-                        <label for="inputEmail" class="control-label">Email</label>
-                        <input type="email" class="form-control" id="inputEmail" placeholder="Email" data-error="Bruh, that email address is invalid" required/>
-                            <div class="help-block with-errors"></div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            Coin Information
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="inputPassword" class="control-label">Password</label>
-                        <div class="form-inline row">
-                            <div class="form-group col-sm-6">
-                                <input type="password" data-minlength="6" class="form-control" id="inputPassword" placeholder="Password" required/>
-                                    <div class="help-block">Minimum of 6 characters</div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" placeholder="Coin Name...." />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="symbol" aria-required>Symbol</label>
+                            <input type="text" class="form-control" id="symbol" placeholder="BTC" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="logo">Logo</label>
+                            <input type="file" class="form-control" id="logo" placeholder="../btc.jpg" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="chain">Network/Chain</label>
+                            <select id="chain" class="form-control">
+                                <option selected value='bsc'>Binance Smart Chain (BSC)</option>
+                                <option value='rth'>Ethereum (ETH)</option>
+                                <option value='matic'>Polygon (MATIC)</option>
+                                <option value='trx'>Tron (TRX)</option>
+                                <option value='ftm'>Fantom (FTM)</option>
+                                <option value='sol'>Solana (SOL)</option>
+                                <option value='kcc'>Kucoin Chain (KCC)</option>
+                                <option value='other'>Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                    <div class="form-group col-md-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="presale" />
+                                <label class="form-check-label" for="presale">
+                                    &nbsp;Presale ?
+                                </label>
                             </div>
-                            <div class="form-group col-sm-6">
-                                <input type="password" class="form-control" id="inputPasswordConfirm" data-match="#inputPassword" data-match-error="Whoops, these don't match" placeholder="Confirm" required/>
-                                    <div class="help-block with-errors"></div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="description" aria-required>Description</label>
+                            <textarea class="form-control" id="description" placeholder="BTC" />
+                        </div>
+                    </div>
+                    {/* <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="presale" />
+                                <label class="form-check-label" for="presale">
+                                    &nbsp;Presale ?
+                                </label>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="underwear" required/>
-                                    Boxers
-                            </label>
-                        </div>
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="underwear" required/>
-                                    Briefs
-                            </label>
+                    </div> */}
+
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            Contract Details
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" id="terms" data-error="Before you wreck yourself" required/>
-                                    Check yourself
-                            </label>
-                            <div class="help-block with-errors"></div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="cAddress">Contract Address</label>
+                            <input type="text" class="form-control" id="cAddress" placeholder="Coin Name...." />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="launchDt" aria-required>Launch Date</label>
+                            <input type="text" class="form-control" id="launchDt" placeholder="BTC" />
                         </div>
                     </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="marketCap">Market Cap</label>
+                            <input type="text" class="form-control" id="marketCap" placeholder="Coin Name...." />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="price" aria-required>Price</label>
+                            <input type="text" class="form-control" id="price" placeholder="BTC" />
+                        </div>
                     </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            Social Media
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="telegram">Telegram</label>
+                            <input type="text" class="form-control" id="telegram" placeholder="Coin Name...." />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="Twitter" aria-required>Twitter</label>
+                            <input type="text" class="form-control" id="Twitter" placeholder="BTC" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="reddit">Reddit</label>
+                            <input type="text" class="form-control" id="reddit" placeholder="Coin Name...." />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="website" aria-required>Website</label>
+                            <input type="text" class="form-control" id="website" placeholder="BTC" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="discord" aria-required>Discord</label>
+                            <input type="text" class="form-control" id="discord" placeholder="BTC" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            Additional Information
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="otherChains" aria-required>Other Chains</label>
+                            <input type="text" class="form-control" id="otherChains" placeholder="BTC" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="dexToools" aria-required>Dextools link</label>
+                            <input type="text" class="form-control" id="dexToools" placeholder="BTC" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="swap" aria-required>Swap link</label>
+                            <input type="text" class="form-control" id="swap" placeholder="BTC" />
+                        </div>
+                    </div>
+                     <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <button type="submit" class="btn btn-primary">Submit Coin</button>
+                        </div>
+                    </div>
+                    
                 </form>
+
             </div>
         )
     };
