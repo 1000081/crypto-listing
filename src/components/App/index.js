@@ -1,4 +1,4 @@
-import React, { Component, Fragment} from 'react';
+import React, { Component, ChangeEvent} from 'react';
 import { connect } from 'react-redux';
 import { Route, Switch} from 'react-router-dom';
 import Button from '../../containers/news/Button';
@@ -12,7 +12,10 @@ export class App extends Component {
     super(props);
     this.state = { hover: false };
   }
+
+
   render() {
+
     return (
             <Switch>
                 <Route path='/coins' exact={true} component={Button}/>
