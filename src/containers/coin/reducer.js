@@ -1,4 +1,5 @@
 import * as types from "../../components/action-types";
+import moment from "moment";
 
 const coinReducer = (state = {}, action) => {
     switch (action.type) {
@@ -13,6 +14,7 @@ const coinReducer = (state = {}, action) => {
                 normalCoins: filteredList(action.payload, types.COIN_TYPE_NORMAL),
                 preSaleCoins: filteredList(action.payload, types.COIN_TYPE_PRE_SALE),
                 newCoins: filteredList(action.payload, types.COIN_TYPE_NEW),
+                coinCollections: action.payload,
                 voteCount: 'AA',
                 loading: false
             }
@@ -51,6 +53,9 @@ const coinReducer = (state = {}, action) => {
 const filteredList = (coinList, coinType) => {
     const results = coinList.filter((coin) => {
         coin.launchDt = '6';
+        var gmtDateTime = moment.utc(coin.listedDt);
+        var local = gmtDateTime.local().format('YYYY-MM-DD h:mm A');
+        coin.listedDt = local;
         return (coin.coinType === coinType);
     });
     return results

@@ -1,6 +1,6 @@
 import { takeEvery } from 'redux-saga';
 import { put, takeLatest, all, fork } from 'redux-saga/effects';
-import { getPromotedCoinsResult, updateCoinsResult } from './action';
+import { getPromotedCoinsResult, updateCoinsResult, addCoinsResult } from './action';
 import * as types from "../../components/action-types";
 import {Redirect} from 'react-router';
 
