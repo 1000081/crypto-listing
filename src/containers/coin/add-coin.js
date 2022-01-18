@@ -45,7 +45,9 @@ class AddCoin extends React.Component {
     };
 
     render() {
-
+        if(this.props.payload && this.props.payload.status) {
+            this.props.history.push('/');
+        }
         return (
             <form className="p-3 mb-2 bg-transparent  text-white">
                 <br />
@@ -97,7 +99,7 @@ class AddCoin extends React.Component {
                             <input className="form-check-input" type="checkbox" id="presale" onChange={this.handleOnChange} />
                             <label className="form-check-label" htmlFor="presale"> &nbsp;Presale?</label>
                     </div>
-                    <div className="form-group col-md-6">
+                    {/* <div className="form-group col-md-6">
                         <label htmlFor="coinType">Coin Type</label>
                         <select id="coinType" className="form-control border border-info" onChange={this.handleOnChange} defaultValue={'select'}>
                             <option selected value='P'>Promoted</option>
@@ -107,7 +109,7 @@ class AddCoin extends React.Component {
                             <option value='NEW'>New</option>
                             <option value='select'>Select</option>
                         </select>
-                    </div>
+                    </div> */}
                 </div>
                 <div className="row">
                     <div className="form-group col-md-12">
@@ -219,7 +221,7 @@ class AddCoin extends React.Component {
 };
 
 const mapStateToProps = state => ({
-    coin: []
+    payload: state.coinReducer.payload
 });
 
 const mapDispatchToProps = { addCoins };

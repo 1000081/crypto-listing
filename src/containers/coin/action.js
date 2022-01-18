@@ -28,5 +28,11 @@ export const getPromotedCoins = () => ({
     type: success ?  types.UPDATE_COINS_SUCCESS : types.UPDATE_COINS_FAILURE, payload
   });
 
+  export const populateCoinDetails = (payload) => ({
+    type: types.POPULATE_COINS_DETAILS,
+    payload
+  });
+
+
 
   

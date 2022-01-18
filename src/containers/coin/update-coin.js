@@ -1,11 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-// import { addCoins } from '../coin/action';
 import 'bootstrap/dist/js/bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { getPromotedCoins } from '../coin/action';
+import { getPromotedCoins, updateCoin } from '../coin/action';
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
-
+import Multiselect from 'multiselect-react-dropdown';
 
 class UpdateCoin extends React.Component {
     constructor(props) {
@@ -37,22 +36,36 @@ class UpdateCoin extends React.Component {
                 customChat: ''
             },
             visible: {
-                logo: true,
-                chain: true,
-                presale: true,
-                presaleLink: true,
-                contAddress: true,
-                description: true,
-                customChat: true,
-                website: true,
-                launchDt: true,
-                telegram: true,
-                twitter: true,
-                discord: true,
+                logo: false,
+                chain: false,
+                presale: false,
+                presaleLink: false,
+                contAddress: false,
+                description: false,
+                customChat: false,
+                website: false,
+                launchDt: false,
+                telegram: false,
+                twitter: false,
+                discord: false,
             },
             items: [],
-            oldCoinData: {}
-
+            oldCoinData: {},
+            options: [
+                {name: 'Logo', id: 1, value: 'logo'},
+                {name: 'Network', id: 2, value: 'chain'},
+                {name: 'Pre Sale', id: 3, value: 'presale'},
+                {name: 'Pre Sale Link', id: 3, value: 'presalelink'},
+                {name: 'Contract Address', id: 3, value: 'contAddress'},
+                {name: 'Description', id: 3, value: 'description'},
+                {name: 'Custom Chat', id: 3, value: 'customChat'},
+                {name: 'Website Link', id: 3, value: 'website'},
+                {name: 'Launch Date', id: 3, value: 'launchDt'},
+                {name: 'Telegram Link', id: 3, value: 'telegram'},
+                {name: 'Twitter Link', id: 3, value: 'twitter'},
+                {name: 'Discord Link', id: 3, value: 'discord'}
+            ],
+            selectedList: []
         };
 
         this.handleOnSubmitCoin = this.handleOnSubmitCoin.bind(this);
@@ -63,26 +76,70 @@ class UpdateCoin extends React.Component {
         this.handleOnFocus = this.handleOnFocus.bind(this);
         this.handleOnClear = this.handleOnClear.bind(this);
 
+        this.handleOnFieldSelect = this.handleOnFieldSelect.bind(this);
+        this.onSelect = this.onSelect.bind(this);
+        this.onRemove = this.onRemove.bind(this);
     };
+
+    onSelect(selectedList, selectedItem) {
+        if(Object.keys(this.state.oldCoinData).length == 0) { 
+            alert('select coin name to update');
+        } else {
+        // tempArr.push('newvalue');
+        console.log('selected List-------'+JSON.stringify(selectedList));
+        console.log('selectedItem-------'+JSON.stringify(selectedItem));
+        this.state.selectedList.push(selectedItem);
+        console.log('after selected List-------'+JSON.stringify(selectedList));
+        }
+    }
+    
+    onRemove(selectedList, removedItem) {
+        const newlist = [].concat(this.state.selectedList) // Clone array with concat or slice(0)
+        newlist.splice(removedItem.index, 1);
+        this.state.selectedList = newlist;
+    }
 
     componentDidMount() {
         this.props.getPromotedCoins();
-        this.setState({ items: this.props.coinCollections })
+        //this.setState({ items: this.props.coinCollections });
+        //this.state.options = this.props.coinCollections;
     };
+
+    componentDidUpdate(prevProps, prevState) {
+        const { visible } = this.state;
+        if (prevState.visible !== visible) {
+            //this.props.getPromotedCoins();
+            console.log('udated');
+        }
+    }
 
 
     handleOnSubmitCoin(e) {
-        // this.props.addCoins(this.state);
-        this.props.history.push('/');
+        let updatedCoin = this.state.coinData;
+        this.props.updateCoin(updatedCoin, updatedCoin._id);
+    };
+
+    handleOnFieldSelect(e) {
+        let selectedFields = this.state.selectedList;
+        let updatedState = this.state;
+        for (let i = 0; i < selectedFields.length; i++) {
+            let selectedField =  selectedFields[i];
+            let currentKey = selectedField.value;
+            let oldValue = this.state.oldCoinData[currentKey];
+            updatedState.visible[currentKey] = true;
+            updatedState.coinData[currentKey] = oldValue;
+            console.log('currentKey-------------'+currentKey);
+            console.log('oldValue-------------'+oldValue);
+          }
+          this.setState(updatedState);
     };
 
     handleOnChange(e) {
-        // this.setState(
-        //     {
-        //         [e.currentTarget.value]: true,
-        //         [e.currentTarget.value]: this.state.oldCoinData.[e.currentTarget.value]
-        //     });
-        console.log();
+        let currentKey = e.currentTarget.id;
+        let currentValue = e.currentTarget.value;
+        let updateState = this.state;
+        updateState.coinData[currentKey] = currentValue;
+        this.setState(updateState);
     };
 
     handleOnSearch(string, results) {
@@ -95,6 +152,7 @@ class UpdateCoin extends React.Component {
 
     handleOnSelect(item) {
         this.state.oldCoinData = item;
+        this.state.coinData = item;
     };
 
     handleOnFocus() {
@@ -106,6 +164,9 @@ class UpdateCoin extends React.Component {
     };
 
     render() {
+        if (this.props.payload && this.props.payload.status) {
+            this.props.history.push('/');
+        }
         return (
             <div className="col-md-12">
                 <br></br>
@@ -164,24 +225,18 @@ class UpdateCoin extends React.Component {
 
                                     <div className="form-group col-md-4">
                                         <label htmlFor="updateField">Update Field</label>
-                                        <select id="updateField" className="form-control border border-info border border-info" onChange={this.handleOnChange} defaultValue={'select'}>
-                                            <option value='logo'>Logo</option>
-                                            <option value='chain'>Network</option>
-                                            <option value='presale'>Pre Sale</option>
-                                            <option value='presalelink'>Pre Sale Link</option>
-                                            <option value='contAddress'>Contract Address</option>
-                                            <option value='description'>Description</option>
-                                            <option value='customChat'>Custom Chat Link</option>
-                                            <option value='website'>Website Link</option>
-                                            <option value='launchDt'>Launch Date</option>
-                                            <option value='telegram'>Telegram Link</option>
-                                            <option value='twitter'>Twitter Link</option>
-                                            <option value='discord'>Discord Link</option>
-                                            <option value='select'> Select Field</option>
-                                        </select>
+                                        <Multiselect
+                                        options={this.state.options} 
+                                        selectedValues={this.state.selectedValue}
+                                        onSelect={this.onSelect}
+                                        onRemove={this.onRemove} 
+                                        displayValue="name"
+                                    />
                                     </div>
-                                    <br />
-                                    <br />
+                                    <br/>
+                                    <button type="button" class="btn btn-primary" onClick={this.handleOnFieldSelect}><i class="fas fa-location-arrow"></i>&nbsp;Add Fields<span class="badge">{this.props.value}</span></button>
+                                    <br/>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -387,10 +442,11 @@ class UpdateCoin extends React.Component {
 };
 
 const mapStateToProps = state => ({
-    coinCollections: state.coinReducer.coinCollections
+    coinCollections: state.coinReducer.coinCollections,
+    payload: state.coinReducer.payload
 });
 
-const mapDispatchToProps = { getPromotedCoins };
+const mapDispatchToProps = { getPromotedCoins, updateCoin };
 
 export default connect(
     mapStateToProps,

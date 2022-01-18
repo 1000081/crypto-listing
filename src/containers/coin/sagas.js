@@ -1,8 +1,6 @@
-import { takeEvery } from 'redux-saga';
 import { put, takeLatest, all, fork } from 'redux-saga/effects';
 import { getPromotedCoinsResult, updateCoinsResult, addCoinsResult } from './action';
 import * as types from "../../components/action-types";
-import {Redirect} from 'react-router';
 
 
 function* fetchPromtedCoins() {
@@ -28,8 +26,7 @@ function* addCoins(request) {
       },
       body: JSON.stringify(request.payload),
     }).then(response => response.json());
-    yield put(addCoinsResult(true, payload));
-    this.props.history.push('/'); 
+    yield put(addCoinsResult(true, {updateMessage:"Added Successfully", status:true}));
   } catch (error) {
     console.log('Error-------' + error);
     yield put(addCoinsResult(false, "Exception occured while save coins"));
@@ -48,7 +45,7 @@ function* updateCoins(request) {
       },
       body: JSON.stringify(request.payload),
     }).then(response => response.json());
-    yield put(updateCoinsResult(true, payload));
+    yield put(updateCoinsResult(true, {updateMessage:"Updated Successfully", status:true}));
   } catch (error) {
     console.log('Error-------' + error);
     yield put(updateCoinsResult(false, "Exception occured Update fetch coins"));

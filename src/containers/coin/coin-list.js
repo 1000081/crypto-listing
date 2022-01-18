@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { getPromotedCoins, updateCoin } from '../coin/action';
 import "gridjs/dist/theme/mermaid.css";
 import CoinAgGrid from '../../components/ag-grid-coins';
-import BtnCellRenderer from '../../components/button-renderer';
-import { ReactSearchAutocomplete } from "react-search-autocomplete";
-
+import VoteBtnCellRenderer from './renderer/vote-button-renderer';
+import NameCellRenderer from './renderer/name-renderer';
+import { Grid } from 'gridjs-react';
 
 class Coins extends React.Component {
   constructor(props) {
@@ -20,7 +20,7 @@ class Coins extends React.Component {
         {
           width: '200',
           field: "name",
-          cellRenderer: this.yearCellRenderer
+          cellRenderer: 'nameCellRenderer'
         },
         {
           width: '100',
@@ -36,14 +36,14 @@ class Coins extends React.Component {
           field: "launchDt",
           cellRenderer: this.launchCellRenderer
         },
-        {
-          width: '170',
-          headerName: "Presale Date"
-        },
-        {
-          width: '100',
-          headerName: "Last 1hr %"
-        },
+        // {
+        //   width: '170',
+        //   headerName: "Presale Date"
+        // },
+        // {
+        //   width: '100',
+        //   headerName: "Last 1hr %"
+        // },
         {
           width: '200',
           headerName: "Price",
@@ -57,18 +57,18 @@ class Coins extends React.Component {
           sortable: true,
           cellRenderer: this.marketCapCellRenderer
         },
-        {
-          width: '130',
-          cellRenderer: this.auditCellRenderer,
-          headerName: "Audit"
-        },
-        {
-          width: '170',
-          cellClass: "cell-wrap-text",
-          autoHeight: true,
-          headerName: "Listed On",
-          field: 'listedDt'
-        },
+        // {
+        //   width: '130',
+        //   cellRenderer: this.auditCellRenderer,
+        //   headerName: "Audit"
+        // // },
+        // {
+        //   width: '170',
+        //   cellClass: "cell-wrap-text",
+        //   autoHeight: true,
+        //   headerName: "Listed On",
+        //   field: 'listedDt'
+        // },
         {
           width: '160',
           field: "vote",
@@ -85,12 +85,14 @@ class Coins extends React.Component {
         minWidth: 100
       },
       frameworkComponents: {
-        btnCellRenderer: BtnCellRenderer
+        btnCellRenderer: VoteBtnCellRenderer,
+        nameCellRenderer: NameCellRenderer
       },
       rowData: [],
       doReferesh: false,
       hover: false,
-      showAddCoin: false
+      showAddCoin: false.payload,
+      data: [ {name: '12345', email: 'srini@gmail.com'}, {name: '12345', email: 'srini@gmail.com'}, {name: '12345', email: 'srini@gmail.com'}]
     }
     this.showAddCoin = this.showAddCoin.bind(this);
   }
@@ -113,7 +115,7 @@ class Coins extends React.Component {
     this.setState({ showAddCoin: true });
   };
 
-  yearCellRenderer(params) {
+  nameCellRenderer(params) {
     // put the value in bold
     return params.value;
   };
@@ -140,9 +142,33 @@ class Coins extends React.Component {
     return '<i class="fas fa-dollar-sign"></i>&nbsp;' + params.value;
   };
 
+  update(){
+    setData(data.slice(0).concat([row()]));
+  }
+
   render() {
+
+    if (this.props.payload && this.props.payload.detailStatus) {
+      this.props.history.push(this.props.payload.path);
+    }
+
     return (
       <div>
+        <div class="row">
+          <div>
+            <button className={"py-2 mb-4 px-4 border rounded-md text-white bg-blue-600"}>
+              Add record
+            </button>
+
+            <Grid
+              data={this.state.data}
+              columns={['Name', 'Email']}
+              pagination={{
+                limit: 2,
+              }}
+            />
+          </div>
+        </div>
         <div class="row">
           <div class="col-sm-12">
             <div class="card">
@@ -243,7 +269,8 @@ const mapStateToProps = state => ({
   normalCoins: state.coinReducer.normalCoins,
   preSaleCoins: state.coinReducer.preSaleCoins,
   newCoins: state.coinReducer.newCoins,
-  voteCount: state.coinReducer.voteCount
+  voteCount: state.coinReducer.voteCount,
+  payload: state.coinReducer.payload
 });
 
 const mapDispatchToProps = { getPromotedCoins, updateCoin };

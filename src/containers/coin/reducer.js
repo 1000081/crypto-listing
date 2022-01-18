@@ -43,6 +43,12 @@ const coinReducer = (state = {}, action) => {
 
         case  types.UPDATE_COINS_FAILURE:
             return { ...state, payload: action.payload, voteCount: 'UU' }     
+
+        case  types.POPULATE_COINS_DETAILS:
+            return { ...state, 
+                payload: action.payload
+            }
+    
         
         default:
             return state;
